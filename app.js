@@ -5,7 +5,7 @@ var logger = require('morgan');
 var util = require('./util');
 
 var indexRouter = require('./routes/index');
-var asinsRouter = require('./routes/asin');
+var rulesRouter = require('./routes/rules');
 
 var app = express();
 
@@ -31,7 +31,7 @@ app.use(require('express-domain-middleware'));
 
 // Application routes
 app.use('/', indexRouter);
-app.use('/asins', asinsRouter);
+app.use('/rules', rulesRouter);
 
 // rewrite virtual urls to angular app to enable refreshing of internal pages
 app.get('*', function(req, res, next) {
