@@ -20,6 +20,8 @@ router.post('/update', update);
 // Remove rules
 router.get('/remove/:id', remove);
 
+// Login
+router.post('/login', login);
 
 function all(req, res, next) {
   MongoClient.connect(conf.database, (err, db) => {
@@ -94,6 +96,21 @@ function remove(req, res, next) {
       res.json(util.success(result, 'Rule removed.'));
     }, (err) => next(err));
   });
+}
+
+function login(req, res, next) {
+  if (req.body.username && req.body.password) {
+    if (req.body.username === 'admin' && req.body.password === '2019@amz') {
+      var user = {};
+      user['isAdmin'] = true;
+      user['name'] = 'admin';
+      res.json(util.success(user, 'Login successful.'));
+    } else {
+      res.json(util.failure('Username and password not matched'));
+    }
+  } else {
+    res.json(util.failure('Login failed.'));
+  }
 }
 
 module.exports = router;
