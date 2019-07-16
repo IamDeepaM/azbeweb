@@ -6,7 +6,7 @@ var MongoClient = mongo.MongoClient;
 var util = require('../util');
 
 /* GET rules listing. */
-router.get('/', all);
+router.get('/:type', all);
 
 /* GET rules by ID. */
 router.get('/:id', dataById);
@@ -24,9 +24,13 @@ router.get('/remove/:id', remove);
 router.post('/login', login);
 
 function all(req, res, next) {
+  var filter = {};
+  if (req.params.type === 'active') {
+    filter['active'] = true;
+  }
   MongoClient.connect(conf.database, (err, db) => {
     if (err) throw err;
-    db.collection('rules').find().toArray((err, rules) => {
+    db.collection('rules').find(filter).toArray((err, rules) => {
       db.close();
       if (err) next(err);
       res.json(util.success(rules, 'All Rules.'));
