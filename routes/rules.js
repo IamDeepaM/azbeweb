@@ -57,7 +57,7 @@ function dataById(req, res, next) {
 function add(req, res, next) {
   MongoClient.connect(conf.database, (err, db) => {
     if (err) throw err;
-    req.body.active = true;
+    req.body.active = false;
     req.body.createdAt = Date.now();
     db.collection('rules').insert(req.body, (err, result) => {
       db.close();
